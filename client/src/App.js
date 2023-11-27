@@ -1,9 +1,11 @@
-import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 
-import { , Login, Profile, Register, ResetPassword } from './pages'
+import { Home, Login, Profile, Register, ResetPassword } from './pages'
+import { useSelector } from "react-redux";
+
 
 function Layout(){
-  const user = null;
+  const user = useSelector(state => state.user);
   const location = useLocation()
 
   return user?.token ? (
@@ -14,8 +16,10 @@ function Layout(){
 }
 
 function App() {
+  const { theme } = useSelector((state) => state.theme)
+
   return (
-    <div className="w-full min-h-[100vh]">
+    <div data-theme={theme} className="w-full min-h-[100vh]">
       <Routes>
         <Route element={<Layout />}>
           <Route path='/' element={<Home />} />
