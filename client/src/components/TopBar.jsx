@@ -7,7 +7,7 @@ import CustomButton from './CustomButton';
 import { useForm } from 'react-hook-form';
 import { BsMoon, BsSun } from 'react-icons/bs';
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { SetTheme } from '../redux/theme';
+import { setTheme } from '../redux/theme';
 import { logout } from '../redux/userSlice';
 
 const TopBar = () => {
@@ -26,7 +26,7 @@ const TopBar = () => {
 
     const handleTheme = () => {
       const themeValue = theme === "light" ? "dark" : "light"
-      dispatch(SetTheme(themeValue))
+      dispatch(setTheme(themeValue))
     }
 
   return (
