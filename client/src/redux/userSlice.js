@@ -9,7 +9,7 @@ const initialState = {
 const userSlice = createSlice({
     name: "user",
     initialState,
-    reducer: {
+    reducers: {
         login(state, action){
             state.user = action.payload;
             localStorage.setItem("user", JSON.stringify(action.payload))
@@ -26,20 +26,5 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export function UserLogin (user) {
-    return (dispatch, getState) => {
-        dispatch(userSlice.actions.login(user))
-    }
-}
+export const { login, logout, updateProfile } = userSlice.actions;
 
-export function UserLogout (user) {
-    return (dispatch, getState) => {
-        dispatch(userSlice.actions.logout())
-    }
-}
-
-export function UpdateProfile (user) {
-    return (dispatch, getState) => {
-        dispatch(userSlice.actions.updateProfile(user))
-    }
-}

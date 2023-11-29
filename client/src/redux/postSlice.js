@@ -7,7 +7,7 @@ const initialState = {
 const postSlice = createSlice({
     name: "post",
     initialState,
-    reducer: {
+    reducers: {
         getPosts(state, action) {
             state.posts = action.payload;
         },
@@ -16,8 +16,4 @@ const postSlice = createSlice({
 
 export default postSlice.reducer;
 
-export function GetPosts(post) {
-    return(dispatch, getState) => {
-        dispatch(postSlice.actions.getPosts(post))
-    }
-}
+export const { getPosts } = postSlice.actions;
