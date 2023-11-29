@@ -16,7 +16,7 @@ const ProfileCard = ({ user }) => {
   return (
     <div>
         <div className='w-full bg-primary flex flex-col items-center shadow-sm rounded-xl px-6 py-4'>
-            <div className='w-full flex items-center justify-center border-b pb-5 border-[#66666645]'>
+            <div className='w-full flex items-center justify-between border-b pb-5 border-[#66666645]'>
                 <Link 
                     to={'/profile/' + user?._id} 
                     className='flex gap-2'
@@ -41,7 +41,7 @@ const ProfileCard = ({ user }) => {
                     {user?._id === data?._id ? (
                         <LiaEditSolid
                             size={22}
-                            className='mx-8 text-blue cursor-pointer'
+                            className='ext-blue cursor-pointer'
                             onClick={() => dispatch(updateProfile(true))}
                         />
                     ) : (
