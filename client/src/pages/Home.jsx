@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { TopBar, ProfileCard,FriendsCard, CustomButton, TextInput, Loading } from '../components'
+import { TopBar, ProfileCard,FriendsCard, CustomButton, TextInput, Loading, PostCard } from '../components'
 import { requests, suggest, posts } from '../assets/data'
 import { Link } from 'react-router-dom'
 import { NoProfile } from '../assets'
@@ -143,7 +143,27 @@ const Home = () => {
   
               </div>
             </form>
-            
+
+            { loading ? 
+              (<Loading />) : 
+              posts?.length > 0 ? 
+                (
+                  posts?.map((post) => (
+                    <PostCard 
+                      key={post?._id} 
+                      post={post}
+                      user={user}
+                      deletePost={() => {}}
+                      likePost={() => {}}
+                    />
+                  ))
+                ) : 
+                (
+                  <div className='flex w-full h-full items-center justify-center'>
+                    <p className='text-lg text-ascent-2'>No Post Available</p>
+                  </div>
+                )
+            }
           </div>
         {/* RIGHT */}
           <div className='hidden w-1/4 h-full lg:flex flex-col gap-8 overflow-y-auto'>
