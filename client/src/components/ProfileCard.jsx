@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 import { NoProfile } from '../assets'
 import { updateProfile } from '../redux/userSlice'
 import { LiaEditSolid } from "react-icons/lia"
-import { BsBriefcase, BsPersonFillAdd, BsFacebook, BsInstagram, } from 'react-icons/bs'
+import { BsBriefcase, BsPersonFillAdd, BsFacebook, BsInstagram,} from 'react-icons/bs'
 import { CiLocationOn } from 'react-icons/ci'
 import moment from "moment";
 import { FaTwitter } from "react-icons/fa";
+import { EditProfile } from '.'
 
 const ProfileCard = ({ user }) => {
     const { user: data, edit } = useSelector((state) => state.user)
@@ -116,6 +117,8 @@ const ProfileCard = ({ user }) => {
                 </div>
             </div>
         </div>
+
+        { edit && <EditProfile />}
     </div>
   )
 }
