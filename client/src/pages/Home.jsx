@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { TopBar, ProfileCard,FriendsCard, CustomButton, TextInput, Loading, PostCard } from '../components'
+import { TopBar, ProfileCard,FriendsCard, CustomButton, TextInput, Loading, PostCard, EditProfile } from '../components'
 import { requests, suggest, posts } from '../assets/data'
 import { Link } from 'react-router-dom'
 import { NoProfile } from '../assets'
@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { BiImages, BiSolidVideo } from 'react-icons/bi'
 
 const Home = () => {
-  const { user } = useSelector(state => state.user)
+  const { user, edit } = useSelector(state => state.user)
   const [ friendRequest, setFriendRequest ] = useState(requests)
   const [ suggestFriends, setSuggestFriends ] = useState(suggest)
   const [ errMsg, setErrMsg ] = useState("")
@@ -27,6 +27,7 @@ const Home = () => {
   }
 
   return (
+    <>
     <div className='home w-full px-0 pb-20 2xl:px-40 bg-bgColor lg:rounded-lg h-screen overflow-hidden'>
       <TopBar />
 
@@ -39,7 +40,7 @@ const Home = () => {
         </div>
 
         {/* CENTER */}
-          <div className='flex-1 h-full bg-primary px-4 flex flex-col gap-6 overflow-y-auto rounded-lg'>
+          <div className='flex-1 h-full px-4 flex flex-col gap-6 overflow-y-auto rounded-lg'>
             <form
               onSubmit={handleSubmit(handlePostSubmit)}
               className='bg-primary px-4 rounded-lg'
@@ -269,6 +270,9 @@ const Home = () => {
           </div>
       </div>
     </div>
+
+   { edit && <EditProfile />}
+    </>
   )
 }
 
