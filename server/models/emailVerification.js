@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const emailVerificationSchema = Schema({
     userId: String,
     token: String,
-    createAt: Date,
+    createdAt: Date,
     expiresAt: Date
 })
 

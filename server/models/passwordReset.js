@@ -1,4 +1,4 @@
-import Mongoose, { Schema }  from "mongoose";
+import mongoose, { Schema }  from "mongoose";
 
 const passwpordResetSchema = Schema({
     userId: {
