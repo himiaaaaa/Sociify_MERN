@@ -20,7 +20,7 @@ let transporter = nodemailer.createTransport({
 export const sendVerificationEmail = async(user, res) => {
     const {_id, email, lastName} = user;
 
-    const token = _id + uuidv4
+    const token = _id + uuidv4()
 
     const link = APP_URL + "users/verify/" + _id + "/" + token;
 
@@ -37,7 +37,7 @@ export const sendVerificationEmail = async(user, res) => {
                 <p>
                     Please verify your email address so we can know that it's really you.
                     <br>
-                    <p>This Link <b>expires in 1 hour</b></p>
+                    <p>This Link <b>expires in 10 minutes</b></p>
                     <br>
                     <a href=${link} style="color: #fff; padding: 14px; text-decoration: none; background-color: #000; border-radius: 8px; font-size: 18px;">
                        Verify Email Address 
@@ -58,7 +58,7 @@ export const sendVerificationEmail = async(user, res) => {
             userId: _id,
             token: hashedToken,
             createdAt: Date.now(),
-            expiresAt: Date.now() + 3600000
+            expiresAt: Date.now() + 600000
         })
 
         if(newVerifiedEmail) {

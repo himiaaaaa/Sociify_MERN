@@ -64,7 +64,7 @@
             <span id="statusIcon" class=""></span>
         </div>
         <div id="statusMessage" class=""></div>
-        <a href="http://localhost:3000/login" id="btn" class="">Login</a>
+        <a href="http://localhost:8800/login" id="btn" class="">Login</a>
     </div>
 
 
@@ -87,7 +87,7 @@
 
         // Display appropriate content and set background color based on the message param
         if (status === 'success') {
-            statusIcon.innerHTML = '√';
+            statusIcon.innerHTML = '/';
             statusMessage.textContent = message;
             card.classList.add('success');
             statusIcon.classList.add('success');
