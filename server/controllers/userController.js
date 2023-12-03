@@ -230,11 +230,11 @@ export const updateUser = async(req, res, next) => {
             _id: userId
         }
 
-        await user.populate({ path: "friends", select: "-password" })
-
         const user = await Users.findByIdAndUpdate(userId, updateUser, {
             new: true
         })
+
+        await user.populate({ path: "friends", select: "-password" })
 
         const token = createJWT(user?._id)
 
@@ -375,6 +375,62 @@ export const acceptRequest = async(req, res, next) => {
         res.status(500).json({
             message: "auth error",
             sussess: false,
+            error: error.message
+        })
+    }
+}
+
+export const profileViews = async(req, res, next) => {
+    try {
+        const { userId } = req.body.user
+        const { id } = req.body
+
+        const user = await Users.findById(id)
+        user.views.push(userId)
+
+        await user.save()
+
+        res.status(201).json({
+            success: true,
+            message: "Successfully"
+        })
+
+
+    } catch(error) {
+        console.log(error)
+        res.status(500).json({
+            message: "auth error",
+            success: false,
+            error: error.message
+        })
+    }
+}
+
+export const suggestedFriends = async(req, res, next) => {
+    try {
+        const { userId } = req.body.user
+
+        let queryObject = {}
+        queryObject._id = { $ne: userId } // finding users who are not the current user (_id not equal to userId)
+        queryObject.friends = { $nin: userId } //finding users who are not already friends with the current user (userId not in the friends array).
+
+        let queryResult = Users.find(queryObject)
+            .limit(15)
+            .select("firstName lastName profileUrl profession -password")
+
+        const suggestedFriends = await queryResult
+
+        res.status(200).json({
+            success: true,
+            data: suggestedFriends
+        })
+
+
+    } catch {
+        console.log(error)
+        res.status(500).json({
+            message: "auth error",
+            success: false,
             error: error.message
         })
     }
