@@ -31,7 +31,7 @@ export const createPost = async(req, res, next) => {
 
 export const getPosts = async(req, res, next) => {
     try {
-        const { userId } = req.body.userId
+        const { userId } = req.body.user
         const { search } = req.body
 
         const user = await Users.findById(userId)
@@ -82,5 +82,26 @@ export const getPosts = async(req, res, next) => {
 
 }
 
+export const getPost = async(req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const post = await Posts.findById(id)
+            .populate({
+                path: "userId",
+                select: "firstName lastName location profileUrl -password"
+            })
+        
+        res.status(200).json({
+            success: true,
+            message: "successfully",
+            data: post
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(404).json({ message: error.message })
+    }
+}
 
 

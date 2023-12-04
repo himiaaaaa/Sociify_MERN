@@ -9,7 +9,7 @@ router.post("/create-post", userAuth, createPost)
 
 //get post
 router.post("/", userAuth, getPosts)
-
+router.post("/:id", userAuth, getPost)
 
 
 export default router
