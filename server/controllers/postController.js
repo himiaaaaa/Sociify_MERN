@@ -155,4 +155,35 @@ export const getComments = async(req, res, next) => {
     }
 }
 
+export const likePost = async(req, res, next) => {
+    try {
+        const { userId } = req.body.user
+        const { id } = req.params
+
+        const post = await Posts.findById(id)
+
+        //Check if User Already Liked the Post
+        const index = post.likes.findIndex((pid) => pid === String(userId))
+
+        if(index === -1) {
+            post.likes.push(userId)
+        } else {
+            post.likes = post.likes.filter((pid) => pid !== String(userId))
+
+            const newPost = await Posts.findByIdAndUpdate(id, post, {
+                new: true
+            })
+
+            res.status(200).json({
+                success: true,
+                message: "successfully",
+                data: newPost,
+            });
+        }
+    } catch {
+        console.log(error);
+        res.status(404).json({ message: error.message })
+    }
+}
+
 
