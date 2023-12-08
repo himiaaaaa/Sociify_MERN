@@ -249,4 +249,36 @@ export const likePostComment = async(req, res, next) => {
     }
 }
 
+export const commentPost = async(req, res, next) => {
+    try {
+        const { comment, from } = req.body
+        const { userId }= req.body.user
+        const { id } = req.params
+
+        if(comment === null){
+            return res.status(404).json({ message: "Comment is required" })
+        }
+
+        const newComment = new Comments({ comment, from, userId })
+
+        await newComment.save()
+
+        //update the post with comment id
+        const post = await Posts.findById(id)
+
+        post.comments.push(newComment._id)
+
+        const updatedPost = await Posts.findByIdAndUpdate(id, post, {
+            new: true
+        })
+
+        res.status(201).json(newComment)
+
+    } catch {
+        console.log(error);
+        res.status(404).json({ message: error.message })
+    }
+}
+
+
 
