@@ -204,6 +204,8 @@ export const likePostComment = async(req, res, next) => {
             const updated = await Comments.findByIdAndUpdate(id, comment, {
                 new: true
             })
+
+            res.status(201).json(updated)
         } else {
             const replyComments = await Comments.findOne(
                 { _id: id }, 
