@@ -1,6 +1,6 @@
 import express, { Router } from "express"
 import userAuth from "../middleware/authMiddleware.js"
-import { createPost, getPosts, getPost, getUserPost, getComments, likePost, likePostComment, commentPost } from "../controllers/postController.js"
+import { createPost, getPosts, getPost, getUserPost, getComments, likePost, likePostComment, commentPost, replyPostComment, } from "../controllers/postController.js"
 
 const router = express.Router()
 
@@ -20,5 +20,6 @@ router.get("/comments/:postId", getComments)
 router.post("/like/:id", userAuth, likePost)
 router.post("/like-comment/:id/:rid?", userAuth, likePostComment)
 router.post("/comment/:id", userAuth, commentPost)
+router.post("/reply-comment/:id", userAuth, replyPostComment);
 
 export default router
