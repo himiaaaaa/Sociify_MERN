@@ -8,8 +8,8 @@ const router = express.Router()
 router.post("/create-post", userAuth, createPost)
 
 //get post
-router.post("/", userAuth, getPosts)
-router.post("/:id", userAuth, getPost)
+router.get("/", userAuth, getPosts)
+router.get("/:id", userAuth, getPost)
 
 router.post("/get-user-post/:id", userAuth, getUserPost)
 

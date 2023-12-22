@@ -4,26 +4,25 @@ import Users from "../models/userModel.js";
 
 export const createPost = async(req, res, next) => {
     try {
-        const { userId } = req.body.userId
+        const { userId } = req.body.user
         const { description, image } = req.body
 
         if(!description) {
             next("Please provide a description")
             return;
+        } else {
+            const post = await Posts.create({
+                userId,
+                description,
+                image
+            })
+    
+            res.status(200).json({
+                success: true,
+                message: "Post created successfully",
+                data: post
+            })
         }
-
-        const post = Posts.create({
-            userId,
-            description,
-            image
-        })
-
-        res.status(200).json({
-            success: true,
-            message: "Post created successfully",
-            data: post
-        })
-
     } catch (error) {
         console.log(error)
         res.status(404).json({ message: error.message })
@@ -169,18 +168,19 @@ export const likePost = async(req, res, next) => {
             post.likes.push(userId)
         } else {
             post.likes = post.likes.filter((pid) => pid !== String(userId))
-
-            const newPost = await Posts.findByIdAndUpdate(id, post, {
-                new: true
-            })
-
-            res.status(200).json({
-                success: true,
-                message: "successfully",
-                data: newPost,
-            });
         }
-    } catch {
+        
+        const newPost = await Posts.findByIdAndUpdate(id, post, {
+            new: true
+        })
+
+        res.status(200).json({
+            success: true,
+            message: "successfully",
+            data: newPost,
+        });
+    
+    } catch (error) {
         console.log(error);
         res.status(404).json({ message: error.message })
     }
@@ -193,12 +193,12 @@ export const likePostComment = async(req, res, next) => {
 
         if(rid === undefined || rid === null || rid === "false") {
             const comment = await Comments.findById(id)
-            const index = comment.likes.findIndex(i => i === String(userId))
+            const index = comment.likes.findIndex((i) => i === String(userId))
 
             if(index === -1) {
                 comment.likes.push(userId)
             } else {
-                comment.likes = comment.likes.filter(i => i !== String(userId))
+                comment.likes = comment.likes.filter((i) => i !== String(userId))
             }
 
             const updated = await Comments.findByIdAndUpdate(id, comment, {
@@ -218,7 +218,7 @@ export const likePostComment = async(req, res, next) => {
                 }
             )
 
-            const index = replyComments?.replies[0]?.likes.findIndex((i) => i !== String(userId))
+            const index = replyComments?.replies[0]?.likes.findIndex((i) => i === String(userId))
 
             if(index === -1) {
                 replyComments.replies[0].likes.push(userId)
@@ -226,7 +226,6 @@ export const likePostComment = async(req, res, next) => {
                 replyComments.replies[0].likes = replyComments.replies[0]?.likes.filter(
                     (i) => i !== String(userId)
                   );
-                }
             }
 
             const query = { _id: id, "replies._id": rid }
@@ -242,8 +241,8 @@ export const likePostComment = async(req, res, next) => {
             })
 
             res.status(201).json(result)
-
-    } catch {
+        }
+    } catch (error) {
         console.log(error);
         res.status(404).json({ message: error.message })
     }
@@ -259,7 +258,7 @@ export const commentPost = async(req, res, next) => {
             return res.status(404).json({ message: "Comment is required" })
         }
 
-        const newComment = new Comments({ comment, from, userId })
+        const newComment = new Comments({ comment, from, userId, postId: id })
 
         await newComment.save()
 
@@ -274,7 +273,7 @@ export const commentPost = async(req, res, next) => {
 
         res.status(201).json(newComment)
 
-    } catch {
+    } catch (error) {
         console.log(error);
         res.status(404).json({ message: error.message })
     }
