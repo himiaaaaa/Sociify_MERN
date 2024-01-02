@@ -4,13 +4,18 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { AiFillSmile } from "react-icons/ai";
 import { TextInput, Loading, CustomButton } from '../components';
-import { useDispatch } from 'react-redux';
+//import { useDispatch } from 'react-redux';
 import { BgImg } from '../assets';
 import { BsShare } from "react-icons/bs";
 import { AiOutlineInteraction } from "react-icons/ai";
 import { ImConnection } from "react-icons/im";
+import { apiRequest } from '../utils'
 
 const Register = () => {
+  const [ errMsg, setErrMsg ] = useState("");
+  const [ isSubmitting, setIsSubmitting ] = useState(false);
+  //const dispatch = useDispatch();
+
   const {
     register, 
     handleSubmit, 
@@ -21,12 +26,35 @@ const Register = () => {
   })
 
   const onSubmit = async(data) => {
-    
-  }
+    setIsSubmitting(true)
 
-  const [ errMsg, setErrMsg ] = useState("");
-  const [ isSubmitting, setIsSubmitting ] = useState(false);
-  const dispatch = useDispatch();
+    try {
+      const res = await apiRequest({
+        url: "/auth/register",
+        data: data,
+        method : "POST",
+      })
+
+      if(res?.status === "failed"){
+        setErrMsg(res)
+      }else{
+        setErrMsg(res);
+        setTimeout(()=>{
+          window.location.replace("/login");
+        }, 5000)
+      }
+
+      console.log(res);
+      setIsSubmitting(false);
+
+    } catch (error) {
+
+      console.log(error)
+      setIsSubmitting(false);
+      
+    }
+
+  }
 
   return (
     <div className='bg-bgColor w-full h-[100vh] flex items-center justify-center'>

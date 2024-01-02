@@ -7,7 +7,7 @@ import CustomButton from './CustomButton';
 import { useForm } from 'react-hook-form';
 import { BsMoon, BsSun } from 'react-icons/bs';
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { setTheme } from '../redux/theme';
+import { setTheme } from '../redux/themeSlice';
 import { logout } from '../redux/userSlice';
 
 const TopBar = () => {
