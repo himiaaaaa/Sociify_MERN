@@ -1,6 +1,7 @@
 import { Outlet, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Home, Login, Profile, Register, ResetPassword } from './pages'
 import { useSelector } from "react-redux";
+import React from "react";
 
 
 function Layout(){

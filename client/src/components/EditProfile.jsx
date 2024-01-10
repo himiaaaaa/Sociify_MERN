@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
@@ -5,13 +6,16 @@ import { MdClose } from 'react-icons/md'
 import TextInput from './TextInput'
 import { Loading, CustomButton } from '.'
 import { updateProfile } from '../redux/userSlice'
+import { UserLogin } from '../redux/userSlice'
+import { apiRequest, handleFileUpload } from '../utils';
 
 const EditProfile = () => {
     const { user } = useSelector((state) => state.user)
     const dispatch = useDispatch()
     const [ errMsg, setErrMsg ] = useState("")
     const [ isSubmitting, setIsSubmitting ] = useState(false)
-    const [ picture, setPicture ] = useState(null)
+    //const [ picture, setPicture ] = useState(null)
+    const [image, setImage] = useState([]);
 
     const {
         register,
@@ -22,17 +26,74 @@ const EditProfile = () => {
         defaultValues: { ...user }
     })
 
+    const handleImage = (e) =>{
+      const file = e.target.files[0];
+      setFileToBase(file);
+      console.log('imagefile', file);
+  }
+
+  console.log('image', image)
+
+  const setFileToBase = (file) =>{
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () =>{
+          setImage(reader.result);
+      }
+  }
+  
+
     const onSubmit = async(data) => {
+      try {
+        //const uri= picture && (await handleFileUpload(picture));
+
+        const { firstName, lastName, location, profession } = data
+        console.log('onsubmitdata', data)
+
+        const res = await apiRequest({
+            url: "/users/update-user",
+            data: {
+                firstName,
+                lastName,
+                location,
+                profession,
+                profileUrl: image ? image : user?.profileUrl?.url ?? '',
+            },
+            method: "PUT",
+            token: user?.token,
+        })
+
+        console.log('Response:', res);
+
+        if (res?.status === "failed") { 
+            setErrMsg(res)
+
+        } else {
+            setErrMsg(res)
+            const newUser = { token: res?.token, ...res?.user }
+            dispatch(UserLogin(newUser))
+
+            setTimeout(() => {
+                dispatch(updateProfile(false))
+            }, 3000)
+        }
+
+        setIsSubmitting(false);
+        window.location.reload()
         
+    } catch (error) {
+        console.log(error);
+        setIsSubmitting(false);
+    }
     }
 
     const handleClose = async() => {
         dispatch(updateProfile(false))
     }
 
-    const handleSelect = async(e) => {
-        setPicture(e.target.files[0])
-    }
+    // const handleSelect = async(e) => {
+    //     setPicture(e.target.files[0])
+    // }
 
   return (
     <div>
@@ -102,6 +163,7 @@ const EditProfile = () => {
                         />
 
                         <TextInput
+                          name='location'
                           label='Location'
                           placeholder='Location'
                           type='text'
@@ -120,10 +182,12 @@ const EditProfile = () => {
                             type='file'
                             className=''
                             id='imgUpload'
-                            onChange={(e) => handleSelect(e)}
+                            onChange={handleImage}
                             accept='.jpg, .png, .jpeg'
                           />
+                          
                         </label>
+                        <img src={image} alt="" />
 
                         {errMsg?.message && (
                           <span

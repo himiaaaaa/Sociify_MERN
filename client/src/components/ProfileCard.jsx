@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -14,6 +15,7 @@ const ProfileCard = ({ user }) => {
     const { user: data, edit } = useSelector((state) => state.user)
     const dispatch = useDispatch()
 
+    console.log("profile card user data", user)
   return (
     <div>
         <div className='w-full bg-primary flex flex-col items-center shadow-sm rounded-xl px-6 py-4'>
@@ -23,7 +25,7 @@ const ProfileCard = ({ user }) => {
                     className='flex gap-2'
                 >
                     <img 
-                        src={user?.profileUrl ?? NoProfile} 
+                        src={user?.profileUrl?.url ?? NoProfile} 
                         alt={user?.email}
                         className='w-14 h-14 object-cover rounded-full'
                     />

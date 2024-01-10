@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
-import Verification from "../models/emailVerification.js";
-import Users from "../models/userModel.js";
-import { compareString, createJWT, hashString } from "../utils/index.js";
-import PasswordReset from "../models/passwordReset.js";
-import { resetPasswordLink } from "../utils/sendEmail.js";
-import FriendRequest from "../models/friendRequest.js";
+import Verification from "../models/emailVerification.js"
+import Users from "../models/userModel.js"
+import { compareString, createJWT, hashString } from "../utils/index.js"
+import PasswordReset from "../models/passwordReset.js"
+import { resetPasswordLink } from "../utils/sendEmail.js"
+import FriendRequest from "../models/friendRequest.js"
+import cloudinary from '../utils/cloudinary.js'
 
 export const verifyEmail = async(req, res) => {
     const { userId, token } = req.params
@@ -213,10 +213,14 @@ export const updateUser = async(req, res, next) => {
     try {
         const { firstName, lastName, email, location, profileUrl, profession } = req.body
 
-        if (!(firstName || lastName || email || location || profileUrl || profession)) {
-            next("Please provide all required fields");
-            return;
-        }
+        // if (!(firstName || lastName || email || location || profileUrl || profession)) {
+        //     next("Please provide all required fields");
+        //     return;
+        // }
+
+        const result = await cloudinary.uploader.upload(profileUrl, {
+            folder: "socialmedia",
+        })
 
         const { userId } = req.body.user
 
@@ -225,7 +229,10 @@ export const updateUser = async(req, res, next) => {
             lastName, 
             email, 
             location, 
-            profileUrl, 
+            profileUrl: {
+                public_id: result.public_id,
+                url: result.secure_url
+            }, 
             profession,
             _id: userId
         }

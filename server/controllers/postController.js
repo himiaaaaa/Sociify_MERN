@@ -41,7 +41,7 @@ export const getPosts = async(req, res, next) => {
         const searchPostQuery = {
             $or: [
                 {
-                    description: { $regex: search, $option: "i" }
+                    description: { $regex: search, $options: "i" }
                 }
             ]
         }

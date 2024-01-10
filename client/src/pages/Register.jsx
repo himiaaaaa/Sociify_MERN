@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -44,7 +45,7 @@ const Register = () => {
         }, 5000)
       }
 
-      console.log(res);
+      console.log('register res', res);
       setIsSubmitting(false);
 
     } catch (error) {
@@ -65,7 +66,7 @@ const Register = () => {
             <div className='p-2 bg-[#065ad8] rounded text-white'>
               <AiFillSmile />
             </div>
-            <span className='text-2xl text-[#065ad8]' font-semibold>
+            <span className='text-2xl text-[#065ad8] font-semibold' >
               Sociify
             </span>
           </div>
@@ -169,7 +170,7 @@ const Register = () => {
             </div>
           
             {
-              errMsg?.message && (
+              errMsg?.message && 
                 <span className={`text-sm ${
                   errMsg?.status === "failed" ? 
                   "text-[#f64949fe]" :
@@ -177,19 +178,18 @@ const Register = () => {
                 } mt-0.5`}>
                   {errMsg?.message}
                 </span>
-              ) 
             }
 
             {
-              isSubmitting ? (
+              isSubmitting ? 
               <Loading /> 
-              ) : (
+               : 
               <CustomButton 
                 type="submit"
                 containerStyles={"inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none"}
                 title='Create Account'
               />
-            )}
+            }
           </form>
 
           <p className='text-ascent-2 text-sm text-center'>
@@ -208,7 +208,7 @@ const Register = () => {
                 <img
                   src={BgImg}
                   alt='Bg'
-                  className='w-48 2xl: w-64 h-48 2xl: h-64 rounded-full object-cover' 
+                  className='2xl: w-64 2xl: h-64 rounded-full object-cover' 
                 />
 
                 <div className='absolute flex gap-1 bg-white right-12 py-2 px-5 rounded-full'>

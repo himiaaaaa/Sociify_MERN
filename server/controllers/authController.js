@@ -8,7 +8,7 @@ export const register = async(req, res, next) => {
 
     if(!(firstName || lastName || email || password)){
         next("Provide Required Fields!")
-        return;
+        return res.status(400).json({ message: "Provide Required Fields!" });
     }
 
     try {
@@ -16,7 +16,7 @@ export const register = async(req, res, next) => {
 
         if(userExist) {
             next("Email Address Already Exists")
-            return;
+            return res.status(400).json({ message: "Email Address Already Exists" });
         }
 
         const hashedPassword = await hashString(password)
@@ -44,29 +44,29 @@ export const login = async(req, res, next) => {
     try {
         if(!email || !password){
             next("Please provide user credentials")
-            return;
+            return res.status(400).json({ message: "Provide Required Fields!" })
         }
 
         const user = await Users.findOne({ email }).select("+password").populate({
             path: "friends",
-            select: "firstName lastName location profileUrl -password"
+            select: "firstName lastName location profession profileUrl -password"
         })
 
         if(!user){
             next("Invalid email or password")
-            return;
+            return res.status(400).json({ message: "Invalid email or password" })
         }
 
         if(!user?.verified){
             next("User email is not verified. Check your email accouand and verify your email")
-            return;
+            return res.status(400).json({ message: "User email is not verified. Check your email accouand and verify your email" })
         }
 
         const isMatch = await compareString(password, user?.password)
 
         if(!isMatch){
             next("Invalid email or password")
-            return;
+            return res.status(400).json({ message: "Invalid email or password" })
         }
 
         user.password = undefined;

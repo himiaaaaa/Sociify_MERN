@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -16,10 +17,8 @@ const postSlice = createSlice({
 
 export default postSlice.reducer;
 
-export const { getPosts } = postSlice.actions;
-
 export function SetPosts(post){
     return (dispatch, getState) =>{
-        dispatch(getPosts(post));
+        dispatch(postSlice.actions.getPosts(post));
     }
 }

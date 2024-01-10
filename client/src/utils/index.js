@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios"
 import { SetPosts } from "../redux/postSlice"
 
@@ -22,8 +23,8 @@ export const apiRequest = async ({ url, token, data, method }) => {
     return result?.data;
   } catch (error) {
     const err = error.response.data;
-    console.log(err);
-    return { status: err.success, message: err.message };
+    console.log('api request error', err);
+    return { status: err.success ?? 'failed', message: err.message };
   }
 };
 
@@ -34,7 +35,7 @@ export const handleFileUpload = async (uploadFile) => {
 
     try {
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_ID}`,
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_ID}/image/upload/`,
         formData
       );
       return response.data.secure_url;

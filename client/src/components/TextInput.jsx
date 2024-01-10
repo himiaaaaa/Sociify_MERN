@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react/prop-types */
 import React from 'react'
 
 const TextInput = React.forwardRef(
@@ -28,7 +30,7 @@ const TextInput = React.forwardRef(
                             text-ascent-1 
                             px-4 
                             py-3 
-                            placeholder: text-[#666] 
+                            placeholder:
                             ${styles}`
                            }
                 {...register}

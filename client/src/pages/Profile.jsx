@@ -1,24 +1,46 @@
-import React, { useState } from 'react'
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { FriendsCard, PostCard, ProfileCard, TopBar, Loading } from '../components'
-import { posts } from '../assets/data'
+//import { posts } from '../assets/data'
+import { deletePost, fetchPosts, getUserInfo, likePost } from '../utils';
 
 const Profile = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.user)
   const [ userInfo, setUserInfo ] = useState(user)
-  //const { posts } = useSelector(state => state.post)
+  const { posts } = useSelector(state => state.posts)
   const [ loading, setLoading ] = useState(false)
 
-  const handleDelete = () => {
+  const uri = "/posts/get-user-post/" + id 
 
+  const getUser = async()=>{
+    const res = await getUserInfo(user?.token, id);
+    setUserInfo(res);
   }
 
-  const handleLikePost = () => {
-
+  const getPosts = async()=>{
+    await fetchPosts(user.token, dispatch, uri);
+    setLoading(false);
   }
+
+  const handleDelete = async (id) => {
+    await deletePost(id, user.token);
+    await getPosts()
+  }
+
+  const handleLikePost = async (uri) => {
+    await likePost({uri:uri, token:user?.token});
+    await getPosts();
+  }
+
+  useEffect(()=>{
+    setLoading(true);
+    getUser();
+    getPosts();
+  },[id]);
 
   return (
     <div>

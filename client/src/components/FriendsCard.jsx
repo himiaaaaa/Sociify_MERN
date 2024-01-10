@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { NoProfile } from '../assets'
@@ -26,6 +27,9 @@ const FriendsCard = ({ friends }) => {
                             />
                             <div className='flex-1'>
                                 <p className='text-base font-medium text-ascent-1'>
+                                    {friend?.firstName} {friend?.lastName}
+                                </p>
+                                <p className='text-sm text-ascent-2'>
                                     {friend?.profession ?? "No Profession"}
                                 </p>
                             </div>

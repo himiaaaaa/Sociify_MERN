@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -7,8 +8,9 @@ import CustomButton from './CustomButton';
 import { useForm } from 'react-hook-form';
 import { BsMoon, BsSun } from 'react-icons/bs';
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { setTheme } from '../redux/themeSlice';
-import { logout } from '../redux/userSlice';
+import { SetTheme } from '../redux/themeSlice';
+import { UserLogout } from '../redux/userSlice';
+import { fetchPosts } from '../utils'
 
 const TopBar = () => {
     const { theme } = useSelector(state => state.theme)
@@ -21,12 +23,12 @@ const TopBar = () => {
     } = useForm()
 
     const handleSearch = async(data) => {
-
+      await fetchPosts(user.token, dispatch, "", data);
     }
 
     const handleTheme = () => {
       const themeValue = theme === "light" ? "dark" : "light"
-      dispatch(setTheme(themeValue))
+      dispatch(SetTheme(themeValue))
     }
 
   return (
@@ -67,7 +69,7 @@ const TopBar = () => {
 
           <div>
             <CustomButton
-              onClick={() => dispatch(logout())}
+              onClick={() => dispatch(UserLogout())}
               title='Log Out'
               containerStyles='text-xs text-ascent-1 px-4 md:px-6 py-1 md:py-2 border border-[#666] rounded-full'
             />

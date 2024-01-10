@@ -1,7 +1,7 @@
-import React from 'react'
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { AiFillSmile } from "react-icons/ai";
 import { TextInput, Loading, CustomButton } from '../components';
 import { useDispatch } from 'react-redux';
@@ -9,6 +9,8 @@ import { BgImg } from '../assets';
 import { BsShare } from "react-icons/bs";
 import { AiOutlineInteraction } from "react-icons/ai";
 import { ImConnection } from "react-icons/im";
+import { apiRequest } from '../utils'
+import { UserLogin } from '../redux/userSlice'
 
 const Login = () => {
   const {
@@ -19,13 +21,44 @@ const Login = () => {
     mode: "onChange"
   })
 
-  const onSubmit = async(data) => {
-    
-  }
 
-  const [ errMsg, setErrMsg ] = useState("");
+  const [ errMsg, setErrMsg ] = useState(null);
   const [ isSubmitting, setIsSubmitting ] = useState(false);
   const dispatch = useDispatch();
+
+  console.log('errmsg', errMsg?.message)
+
+  const onSubmit = async(data) => {
+    setIsSubmitting(true);
+
+    try {
+      const res = await apiRequest({
+        url: "/auth/login",
+        data: data,
+        method: "POST",
+      });
+
+      if(res?.status === "failed"){
+
+        console.log('login fail res',res)
+        setErrMsg(res);
+
+      } else {
+
+        console.log('login res',res)
+        const newData = {token: res?.token, ...res?.user}
+
+        dispatch(UserLogin(newData))
+
+        window.location.replace("/");
+      }
+      setIsSubmitting(false);
+      
+    } catch (error) {
+      console.log(error);
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className='bg-bgColor w-full h-[100vh] flex items-center justify-center'>
@@ -36,7 +69,7 @@ const Login = () => {
             <div className='p-2 bg-[#065ad8] rounded text-white'>
               <AiFillSmile />
             </div>
-            <span className='text-2xl text-[#065ad8]' font-semibold>
+            <span className='text-2xl text-[#065ad8] font-semibold'>
               Sociify
             </span>
           </div>
@@ -88,8 +121,9 @@ const Login = () => {
               forget password?
             </Link>
 
+
             {
-              errMsg?.message && (
+              errMsg?.message && 
                 <span className={`text-sm ${
                   errMsg?.status === "failed" ? 
                   "text-[#f64949fe]" :
@@ -97,23 +131,24 @@ const Login = () => {
                 } mt-0.5`}>
                   {errMsg?.message}
                 </span>
-              ) 
+              
             }
 
             {
-              isSubmitting ? (
+              isSubmitting ? 
               <Loading /> 
-              ) : (
+              : 
               <CustomButton 
                 type="submit"
                 containerStyles={"inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none"}
                 title='Login'
               />
-            )}
+            }
+
           </form>
 
           <p className='text-ascent-2 text-sm text-center'>
-                Don't have an account?
+                Don&apos;t have an account?
                 <Link
                   to="/register"
                   className='text-[#065ad8] font-semibold ml-2 cursor-pointer'
@@ -128,7 +163,7 @@ const Login = () => {
                 <img
                   src={BgImg}
                   alt='Bg'
-                  className='w-48 2xl: w-64 h-48 2xl: h-64 rounded-full object-cover' 
+                  className='2xl: w-64 h-48 2xl: rounded-full object-cover' 
                 />
 
                 <div className='absolute flex gap-1 bg-white right-12 py-2 px-5 rounded-full'>

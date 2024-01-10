@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { TextInput, Loading, CustomButton } from '../components'
+import { apiRequest } from '../utils'
 
 const ResetPassword = () => {
   const [ errMsg, setErrMsg ] = useState("")
@@ -14,7 +16,26 @@ const ResetPassword = () => {
     mode: "onChange"
   })
 
-  const onSubmit = async(data) => {};
+  const onSubmit = async ( data ) => {
+    setIsSubmitting(true)
+    try {
+      const res = await apiRequest({
+        url: "/users/request-passwordreset",
+        data: data,
+        method: "POST",
+      });
+      if(res?.status === "failed"){
+        setErrMsg(res);
+      }
+      else{
+        setErrMsg(res);
+      }
+      setIsSubmitting(false);
+    } catch (error) {
+      console.log(error)
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className='w-full h-[100vh] bg-bgColor flex items-center justify-center p-6'>
@@ -45,7 +66,7 @@ const ResetPassword = () => {
           />
 
           {
-            errMsg?.message && (
+            errMsg?.message && 
               <span className={`text-sm ${
                 errMsg?.status === "failed" ? 
                 "text-[#f64949fe]" :
@@ -53,19 +74,18 @@ const ResetPassword = () => {
               } mt-0.5`}>
                 {errMsg?.message}
               </span>
-            ) 
           }
 
           {
-            isSubmitting ? (
+            isSubmitting ? 
             <Loading /> 
-            ) : (
+             : 
             <CustomButton 
               type="submit"
               containerStyles={"inline-flex justify-center rounded-md bg-blue px-8 py-3 text-sm font-medium text-white outline-none"}
               title='Submit'
             />
-          )}
+          }
         </form>
       </div>
     </div>
