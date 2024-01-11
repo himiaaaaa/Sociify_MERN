@@ -22,6 +22,7 @@ const PORT = process.env.PORT || 8800;
 
 dbConnection()
 
+app.use(express.static('build'))
 app.use(helmet())
 app.use(cors())
 app.use(bodyParser.json())
