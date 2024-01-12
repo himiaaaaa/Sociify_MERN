@@ -16,7 +16,7 @@ dotenv.config()
 
 const app = express()
 
-app.use(express.static(path.join(__dirname, "views/verifiedPage.html")))
+app.use(express.static(path.join(__dirname, "/views/verifiedPage.html")))
 
 const PORT = process.env.PORT || 8800;
 
