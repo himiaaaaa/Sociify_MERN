@@ -140,6 +140,7 @@ const setFileToBase = (file) =>{
 
   const acceptFriendRequest = async(id, status)=>{
     try {
+      setLoading(true)
       const res = await apiRequest({
         url: "/users/accept-request",
         token: user?.token,
@@ -147,8 +148,15 @@ const setFileToBase = (file) =>{
         data: {rid: id, status},
       });
       setFriendRequest(res?.data);
+      getUser();
+      fetchPost();
+      fetchFriendRequests();
+      fetchSuggestedFriends();
+
     } catch (error) {
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
 
