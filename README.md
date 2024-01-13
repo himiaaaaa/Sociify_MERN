@@ -17,7 +17,7 @@ Deployed at: https://sociify-gq2u.onrender.com
 - Provide friend suggestion.
 - Update personal profiles by adding personal information and profile pictures.
 - Create and delete own posts with texts and images.
-- Search post by their content.
+- Search post.
 - Read posts in homepage.
 - View profiles of users and browse through their own posts in their profile page.
 - Interact with posts by liking and commenting and replying comments.
@@ -60,9 +60,14 @@ Deployed at: https://sociify-gq2u.onrender.com
 
 ## Screenshots
 
+![Screenshot](https://res.cloudinary.com/dxnmrthvk/image/upload/v1705141758/sociify%20screenshot/sociify%20screenshot/signup_vons0k.png)
+![Screenshot](https://res.cloudinary.com/dxnmrthvk/image/upload/v1705141754/sociify%20screenshot/sociify%20screenshot/email_verification_yu2uno.png)
+![Screenshot](https://res.cloudinary.com/dxnmrthvk/image/upload/v1705141758/sociify%20screenshot/sociify%20screenshot/homepage_and_friend_request_cqa6bt.png)
+![Screenshot](https://res.cloudinary.com/dxnmrthvk/image/upload/v1705141752/sociify%20screenshot/sociify%20screenshot/edit_profile_qlxvwm.png)
+![Screenshot](https://res.cloudinary.com/dxnmrthvk/image/upload/v1705141752/sociify%20screenshot/sociify%20screenshot/like_and_comment_x4yyrm.png)
 
 ## Future Updates
-- reset password page
+- resetpassword page
 - Personal real-time Chat Feature
 - Sort posts by attributes such as like count, comment count and date created
 - ...
