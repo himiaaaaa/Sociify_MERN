@@ -66,7 +66,7 @@ const EditProfile = () => {
         console.log('Response:', res);
 
         if (res?.status === "failed") { 
-            setErrMsg(res)
+            setErrMsg(res.message || "Failed to update profile.")
 
         } else {
             setErrMsg(res)
@@ -79,7 +79,7 @@ const EditProfile = () => {
         }
 
         setIsSubmitting(false);
-        window.location.reload()
+        //window.location.reload()
         
     } catch (error) {
         console.log(error);
