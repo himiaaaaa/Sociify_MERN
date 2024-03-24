@@ -57,6 +57,9 @@ Deployed at: https://sociify-gq2u.onrender.com
 - nodemon (development server)
 - uuid (generating unique IDs)
 
+## User Auth Flowchart
+
+![user Auth](./client/src/assets/User-auth.png)
 
 ## Screenshots
 
